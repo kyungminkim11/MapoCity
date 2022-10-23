@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="https://www.gstatic.com/firebasejs/7.2/firebase.js"></script>
+    <title>Map View</title>
+    <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+    <!-- <p id="demo">
+        A Paragraph.
+        </p>
+        <pre id="object">
+        </pre>
+        <button type="button" onclick="myFunction()">
+        데이터 쓰기
+    </button> -->
+<script>
+    import { getDatabase, ref, child, set, get } from "https://www.gstatic.com/firebasejs/9.9.0/firebase-database.js";
+    // 파이어베이스에 등록한 앱에 CDN클릭 후 해당정보 가져와서 삽입
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+        apiKey: "AIzaSyDIMR9iZNJRr8jkSrGf_Gox-2VyHPdEMHk",
+        authDomain: "test-64c51.firebaseapp.com",
+        databaseURL: "https://test-64c51-default-rtdb.firebaseio.com",
+        projectId: "test-64c51",
+        storageBucket: "test-64c51.appspot.com",
+        messagingSenderId: "1072807021385",
+        appId: "1:1072807021385:web:492fdfd58a77f059d52898",
+        measurementId: ""
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+
+    // firebase에서 읽기
+    var demo = document.getElementById("demo");
+    var preObject = document.getElementById("object");
+    var dbRef = firebase.database().ref().child("Demo");
+
+    dbRef.on('value',snap => {
+        preObject.innerText = JSON.stringify(snap.val(),null,3);
+    });
+
+</script>
+
+<script>
+    // var markerInfot = [ 
+    //     { a : 'a'
+    //     },
+    //     { a : 'b'
+    //     }];
+
+    // **전체 DB 값 초기화
+    for (var i = 0; i < markerInfot.length; i++) {
+        alert(markerInfot[i]);
+        // firebase.database().ref(markerInfo[i].id).set({
+        //     // StoreName : markerInfo[i].StoreName,
+        //     bSelect : false
+        // });
+    }
+
+    // ** DB 읽어오기
+    // const dbRef = ref('0');
+	// get(child(dbRef, '0')).then((snapshot) => {
+	// 	if (snapshot.exists()) {
+	// 		alert("read value.", snapshot.val());
+	// 	} else {
+	// 		alert("No data");
+	// 	}
+	// }).catch((error) => {
+	// 	alert(error);
+	// });
+
+    // ** DB 선택 값 처리
+    // var bTemp = Boolean(!true);
+
+
+    // 클릭 이벤트
+    function myFunction() {
+
+    //     document.getElementById("demo").innerHTML = "찜 등록";
+    //     alert("Sucess");
+    
+    //     // DB Write
+    //    // firebase.database().ref(markerInfo[i].id).set({
+    //     firebase.database().ref("1").set({
+    //         // StoreName : markerInfo[1].StoreName,
+    //         bSelect : bTemp
+    //     });
+    }
+    
+</script>
+
+<div id="map" style="width:1200px;height:1200px;"></div>
+<script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=5eeabe7228690178dcff144004f02848&libraries=clusterer"></script>
+<script>
+var markerInfo = [
+    {
+        StoreName : '동대문종합시장 D동상가',
+        Adress    : '서울 종로구 종로 266',
+        OpenHour  : '00',
+        OpenMin   : '00',
+        CloseHour : '00',
+        CloseMin  : '00',
+        Tel       : '02-2279-8751',
+        latlng  : new kakao.maps.LatLng(37.570619094456156 , 127.00736624998058 ),
+        removable: true
+    },
+    {
+        StoreName : '동대문종합시장 B동상가',
+        Adress    : '서울 종로구 종로 266',
+        OpenHour  : '00',
+        OpenMin   : '00',
+        CloseHour : '00',
+        CloseMin  : '00',
+        Tel       : '02-2279-8751',
+        latlng  : new kakao.maps.LatLng( 37.570146072601666 , 127.0073548838352  ),
+        removable: true
+    },
+    {
+        StoreName : '동대문종합시장 C동상가',
+        Adress    : '서울 종로구 종로 266',
+        OpenHour  : '00',
+        OpenMin   : '00',
+        CloseHour : '00',
+        CloseMin  : '00',
+        Tel       : '02-2279-8751',
+        latlng  : new kakao.maps.LatLng( 37.570580744947165 , 127.0082180462783  ),
+        removable: true
+    },
+    {
+        StoreName : '동대문종합시장 악세서리부자재시장',
+        Adress    : '서울 종로구 종로 266 A,B동 5층',
+        OpenHour  : '00',
+        OpenMin   : '00',
+        CloseHour : '00',
+        CloseMin  : '00',
+        Tel       : '00-0000-0000',
+        latlng  : new kakao.maps.LatLng( 37.570118985813025 , 127.00821799727542 ),
+        removable: true
+    },
+    {
+        StoreName : '현대시티 아울렛',
+        Adress    : '서울 중구 장충단로13길 20',
+        OpenHour  : '10',
+        OpenMin   : '30',
+        CloseHour : '21',
+        CloseMin  : '00',
+        Tel       : '02-2283-2233',
+        latlng  : new kakao.maps.LatLng(  37.568756265406606 , 127.00769432765304 ),
+        removable: true
+    },
+    {
+        StoreName : '동대문 패션 타운',
+        Adress    : '서울특별시 중구 을지로6가 18-12',
+        OpenHour  : '00',
+        OpenMin   : '00',
+        CloseHour : '00',
+        CloseMin  : '00',
+        Tel       : '00-0000-0000',
+        latlng  : new kakao.maps.LatLng(  37.5685714950933  , 127.0086507912937    ),
+        removable: true
+    },
+    {
+        StoreName : '두타',
+        Adress    : '서울 중구 장충단로 275 두산타워빌딩',
+        OpenHour  : '10',
+        OpenMin   : '30',
+        CloseHour : '24',
+        CloseMin  : '00',
+        Tel       : '02-3398-3114',
+        latlng  :  new kakao.maps.LatLng(  37.56898144058044 , 127.00875271315505   ),
+        removable: true
+    },
+    {
+        StoreName : '현대백화점 면세점',
+        Adress    : '서울 중구 장충단로 275 두산타워빌딩',
+        OpenHour  : '12',
+        OpenMin   : '30',
+        CloseHour : '21',
+        CloseMin  : '00',
+        Tel       : '02-3668-8000',
+        latlng  : new kakao.maps.LatLng(  37.56909404673095 , 127.00899609343921   ),
+        removable: true
+    },
+    {
+        content : '<div>피리부는 고양이</div>',
+        latlng  : new kakao.maps.LatLng(  37.570515662978444 , 127.00332513705835  ),
+        removable: true
+    },
+    {
+        StoreName : '아크테릭스',
+        Adress    : '서울 종로구 동호로38길 23',
+        OpenHour  : '09',
+        OpenMin   : '30',
+        CloseHour : '20',
+        CloseMin  : '00',
+        Tel       : '02-2266-2513',
+        latlng  : new kakao.maps.LatLng(  37.57051340474447 , 127.00352323022345   ),
+        removable: true
+    },
+    {
+        StoreName : '볼레부',
+        Adress    : '서울 종로구 율곡로16길 17 현금빌딩 2, 5층',
+        OpenHour  : '00',
+        OpenMin   : '00',
+        CloseHour : '00',
+        CloseMin  : '00',
+        Tel       : '0507-1400-8799',
+        latlng  : new kakao.maps.LatLng(  37.57059898472917 , 127.00398167919374   ),
+        removable: true
+    },
+    {
+        StoreName : 'PAT',
+        Adress    : '서울 종로구 종로 238',
+        OpenHour  : '00',
+        OpenMin   : '00',
+        CloseHour : '00',
+        CloseMin  : '00',
+        Tel       : '02-2267-3677',
+        latlng  : new kakao.maps.LatLng(  37.57077917277914 , 127.00429580922321   ),
+        removable: true
+    },
+    {
+        StoreName : '소프',
+        Adress    : '서울 종로구 종로 248-2',
+        OpenHour  : '10',
+        OpenMin   : '30',
+        CloseHour : '19',
+        CloseMin  : '50',
+        Tel       : '00-0000-0000',
+        latlng  : new kakao.maps.LatLng(  37.57081065825044 , 127.00548720526282  ),
+        removable: true
+    },
+    {
+        StoreName : '유니크',
+        Adress    : '서울 중구 장충단로 275',
+        OpenHour  : '00',
+        OpenMin   : '00',
+        CloseHour : '00',
+        CloseMin  : '00',
+        Tel       : '02-3398-5123',
+        latlng  : new kakao.maps.LatLng(  37.570056109825565, 127.0046693127114   ),
+        removable: true
+    },
+    {
+        StoreName : '로얄 패션',
+        Adress    : '서울 종로구 종로36나길 8',
+        OpenHour  : '00',
+        OpenMin   : '00',
+        CloseHour : '00',
+        CloseMin  : '00',
+        Tel       : '02-2273-1035',
+        latlng  : new kakao.maps.LatLng(  37.5700426070047  , 127.00435236463876  ),
+        removable: true
+    },
+    {
+        StoreName : '영진사',
+        Adress    : '서울 중구 청계천로 274',
+        OpenHour  : '00',
+        OpenMin   : '00',
+        CloseHour : '00',
+        CloseMin  : '00',
+        Tel       : '02-2266-6796',
+        latlng  : new kakao.maps.LatLng(  37.56991422814688 , 127.0039844726225    ),
+        removable: true
+    },
+    {
+        StoreName : '블랙야크',
+        Adress    : '서울 종로구 종로36길 22',
+        OpenHour  : '00',
+        OpenMin   : '00',
+        CloseHour : '00',
+        CloseMin  : '00',
+        Tel       : '02-2272-1818',
+        latlng  : new kakao.maps.LatLng(  37.569900719189114, 127.00380335954371   ),
+        removable: true
+    },
+    {
+        StoreName : '덕성상사',
+        Adress    : '서울 종로구 청계천로 231-1',
+        OpenHour  : '08',
+        OpenMin   : '00',
+        CloseHour : '18',
+        CloseMin  : '00',
+        Tel       : '02-2275-1016',
+        latlng  : new kakao.maps.LatLng(  37.56992776569592 , 127.00324587423684   ),
+        removable: true
+    },
+    {
+        StoreName : '예복닷컴',
+        Adress    : '서울 종로구 청계천로 227 종오빌딩 3층',
+        OpenHour  : '10',
+        OpenMin   : '00',
+        CloseHour : '19',
+        CloseMin  : '00',
+        Tel       : '02-3463-5588',
+        latlng  : new kakao.maps.LatLng(  37.56988497822979 , 127.00286383866401   ),
+        removable: true
+    },
+    {
+        StoreName : '아이더',
+        Adress    : '서울 종로구 동호로 402',
+        OpenHour  : '00',
+        OpenMin   : '00',
+        CloseHour : '00',
+        CloseMin  : '00',
+        Tel       : '02-2269-4254',
+        latlng  : new kakao.maps.LatLng(  37.57026115451358 , 127.00238560085293   ),
+        removable: true
+    },
+    {
+        StoreName : '마전교 지하상가',
+        Adress    : '서울 종로구 동호로 398 마전교지하쇼핑센터',
+        OpenHour  : '00',
+        OpenMin   : '00',
+        CloseHour : '00',
+        CloseMin  : '00',
+        Tel       : '02-2269-3380',
+        latlng  : new kakao.maps.LatLng(  37.5699390503972  , 127.00229786423554   ),
+        removable: true
+    },
+    {
+        StoreName : '잠옷나라 새샘',
+        Adress    : '서울 중구 청계천로 246',
+        OpenHour  : '00',
+        OpenMin   : '00',
+        CloseHour : '00',
+        CloseMin  : '00',
+        Tel       : '02-2265-9736',
+        latlng  : new kakao.maps.LatLng(  37.56937589554204 , 127.00360524260412   ),
+        removable: true
+    },
+    {
+        StoreName : '수원까운',
+        Adress    : '서울 중구 청계천로 246 평화시장 1층 가열 81,82호',
+        OpenHour  : '09',
+        OpenMin   : '00',
+        CloseHour : '18',
+        CloseMin  : '00',
+        Tel       : '02-2275-6165',
+        latlng  : new kakao.maps.LatLng(  37.56938487821879 , 127.00440892358813   ),
+        removable: true
+    },
+    {
+        StoreName : '동문상가',
+        Adress    : '서울 종로구 종로44길 14',
+        OpenHour  : '00',
+        OpenMin   : '00',
+        CloseHour : '00',
+        CloseMin  : '00',
+        Tel       : '02-744-4766',
+        latlng  : new kakao.maps.LatLng(  37.57051518568613 , 127.01112435206257   ),
+        removable: true
+    },
+    {
+        StoreName : '아이슈즈',
+        Adress    : '서울 종로구 종로50다길 34',
+        OpenHour  : '00',
+        OpenMin   : '00',
+        CloseHour : '00',
+        CloseMin  : '00',
+        Tel       : '0507-1448-3993',
+        latlng  : new kakao.maps.LatLng(  37.57023360472262 , 127.01133372227915   ),
+        removable: true
+    },
+    {
+        StoreName : '청계상가',
+        Adress    : '서울 종로구 종로50다길 20',
+        OpenHour  : '00',
+        OpenMin   : '00',
+        CloseHour : '00',
+        CloseMin  : '00',
+        Tel       : '02-2266-2513',
+        latlng  : new kakao.maps.LatLng(  37.57027410461208 , 127.01179217136162   ),
+        removable: true
+    },
+    {
+        StoreName : '동대문 신발 상가',
+        Adress    : '서울 종로구 청계천로 319',
+        OpenHour  : '00',
+        OpenMin   : '00',
+        CloseHour : '00',
+        CloseMin  : '00',
+        Tel       : '00-0000-0000',
+        latlng  : new kakao.maps.LatLng(  37.57008471377512  , 127.0134900740367   ),
+        removable: true
+    },
+    {
+        StoreName : '청계천 신발류 도매시장',
+        Adress    : '서울 종로구 청계천로 295',
+        OpenHour  : '00',
+        OpenMin   : '00',
+        CloseHour : '00',
+        CloseMin  : '00',
+        Tel       : '02-0000-0000',
+        latlng  : new kakao.maps.LatLng(  37.57005573129246 , 127.01054415700249   ),
+        removable: true
+    },
+    {
+        StoreName : '명품 동대문 가방 수선',
+        Adress    : '서울 종로구 청계천로 295 1층',
+        OpenHour  : '00',
+        OpenMin   : '00',
+        CloseHour : '00',
+        CloseMin  : '00',
+        Tel       : '02-741-0670',
+        latlng  : new kakao.maps.LatLng(  37.570035416796784, 127.01100542550726   ),
+        removable: true
+    },
+    {
+        StoreName : '선일 실내화',
+        Adress    : '서울 종로구 창신동 436-67',
+        OpenHour  : '03',
+        OpenMin   : '00',
+        CloseHour : '14',
+        CloseMin  : '00',
+        Tel       : '02-764-6240',
+        latlng  : new kakao.maps.LatLng(  37.57009170228898 , 127.01128842257161   ),
+        removable: true
+    },
+    {
+        StoreName : '청평화 패션몰',
+        Adress    : '서울 중구 청계천로 334',
+        OpenHour  : '00',
+        OpenMin   : '00',
+        CloseHour : '12',
+        CloseMin  : '00',
+        Tel       : '02-2252-8036',
+        latlng  : new kakao.maps.LatLng(  37.569514590457565 , 127.01547653713023   ),
+        removable: true
+    },
+    {
+        StoreName : '신평화 상가',
+        Adress    : '서울 중구 청계천로 298',
+        OpenHour  : '00',
+        OpenMin   : '00',
+        CloseHour : '00',
+        CloseMin  : '00',
+        Tel       : '00-0000-0000',
+        latlng  : new kakao.maps.LatLng(  37.56945652114056  , 127.01107042719747   ),
+        removable: true
+    },
+    {
+        StoreName : '빨간 양말',
+        Adress    : '서울 중구 청계천로 298',
+        OpenHour  : '00',
+        OpenMin   : '00',
+        CloseHour : '00',
+        CloseMin  : '00',
+        Tel       : '02-2231-0035',
+        latlng  : new kakao.maps.LatLng(  37.56952408083495 , 127.01122890971226   ),
+        removable: true
+    },
+    {
+        StoreName : '남평화 상가',
+        Adress    : '서울 중구 장충단로 282-10 남평화시장',
+        OpenHour  : '20',
+        OpenMin   : '00',
+        CloseHour : '06',
+        CloseMin  : '00',
+        Tel       : '02-2237-0620',
+        latlng  : new kakao.maps.LatLng(  37.5691749813162  , 127.01084116742385  ),
+        removable: true
+    },
+    {
+        StoreName : '광희패션몰',
+        Adress    : '서울 중구 마장로1길 21',
+        OpenHour  : '20',
+        OpenMin   : '00',
+        CloseHour : '05',
+        CloseMin  : '00',
+        Tel       : '02-2238-4352',
+        latlng  : new kakao.maps.LatLng(  37.56866581774455 , 127.01189096199622  ),
+        removable: true
+    },
+    {
+        StoreName : '벨포스트',
+        Adress    : '서울 중구 마장로 19',
+        OpenHour  : '20',
+        OpenMin   : '00',
+        CloseHour : '09',
+        CloseMin  : '16',
+        Tel       : '02-2238-4916',
+        latlng  : new kakao.maps.LatLng(  37.5681522404983 , 127.01198709404473   ),
+        removable: true
+    },
+    {
+        StoreName : '아트 프라자',
+        Adress    : '서울 중구 마장로1길 28',
+        OpenHour  : '20',
+        OpenMin   : '00',
+        CloseHour : '05',
+        CloseMin  : '00',
+        Tel       : '02-2236-1768',
+        latlng  : new kakao.maps.LatLng(  37.56919956446582 , 127.01278245087921   ),
+        removable: true
+    },
+    {
+        StoreName : '에이풀',
+        Adress    : '서울 중구 마장로1가길 33',
+        OpenHour  : '00',
+        OpenMin   : '00',
+        CloseHour : '00',
+        CloseMin  : '00',
+        Tel       : '02-2233-3210',
+        latlng  : new kakao.maps.LatLng(  37.56918368168421 , 127.01380685511946   ),
+        removable: true
+    },
+    {
+        StoreName : '디오트 패션도매 상가',
+        Adress    : '서울 중구 다산로 293',
+        OpenHour  : '00',
+        OpenMin   : '00',
+        CloseHour : '12',
+        CloseMin  : '00',
+        Tel       : '02-2117-8000',
+        latlng  : new kakao.maps.LatLng(  37.569145246547784  , 127.01497840675604  ),
+        removable: true
+    },
+    {
+        StoreName : 'DDP 패션몰',
+        Adress    : '서울 중구 마장로 22',
+        OpenHour  : '20',
+        OpenMin   : '00',
+        CloseHour : '06',
+        CloseMin  : '00',
+        Tel       : '02-2290-6059',
+        latlng  : new kakao.maps.LatLng(  37.56731654870861 , 127.01216523644388  ),
+        removable: true
+    },
+    {
+        StoreName : '동대문 패션 비즈센터',
+        Adress    : '서울 중구 을지로45길 46',
+        OpenHour  : '00',
+        OpenMin   : '00',
+        CloseHour : '00',
+        CloseMin  : '00',
+        Tel       : '02-3298-5100',
+        latlng  : new kakao.maps.LatLng(  37.5663839896682 , 127.01243674055094   ),
+        removable: true
+    },
+    {
+        StoreName : '누죤 패션몰',
+        Adress    : '서울 중구 을지로45길 62',
+        OpenHour  : '20',
+        OpenMin   : '00',
+        CloseHour : '06',
+        CloseMin  : '00',
+        Tel       : '02-6366-3001',
+        latlng  : new kakao.maps.LatLng(  37.56696056295251, 127.01303108797612   ),
+        removable: true
+    },
+    {
+        StoreName : 'APM',
+        Adress    : '서울 중구 마장로 40',
+        OpenHour  : '18',
+        OpenMin   : '00',
+        CloseHour : '03',
+        CloseMin  : '00',
+        Tel       : '02-2250-2025',
+        latlng    : new kakao.maps.LatLng(  37.567757828740454 , 127.01403863549432 ),
+    },
+];  
+
+
+// Map Create
+var mapContainer = document.getElementById('map'),
+    mapOption = { 
+        center: new kakao.maps.LatLng(37.56859401, 127.0092570),
+        level: 4,
+    };
+
+var map = new kakao.maps.Map(mapContainer, mapOption);
+
+var clickedOverlay = null;
+
+//map.setMaxLevel(4);
+
+
+
+// Marker Create
+for (var i = 0; i < markerInfo.length; i++) {
+    var data = markerInfo[i];
+    displayMarker(data);
+}
+
+// Marker Display
+function displayMarker(data) { 
+    var marker = new kakao.maps.Marker({
+        map: map,
+        position: data.latlng
+    });
+
+    // Custom Overlat Setting
+    var content = document.createElement('div');
+    content.className = 'wrap';
+
+    var wrap = document.createElement('div');
+    wrap.className = 'info';
+    content.appendChild(wrap);
+
+    // Close Image
+    var CloseImg = document.createElement("img");
+    CloseImg.className = 'close';
+    CloseImg.setAttribute("src", "img/close_btn.png");
+    CloseImg.setAttribute("width", 100);
+    CloseImg.setAttribute("height",100);
+    CloseImg.onclick = function() {
+        overlay.setMap(null);
+    };
+    wrap.appendChild(CloseImg);
+
+    // Favorite
+    var FavoriteImage = document.createElement("img");
+    FavoriteImage.className = 'favoriteimg';
+    FavoriteImage.setAttribute("src", "img/favorite_off.png");
+    FavoriteImage.setAttribute("width", 486);
+    FavoriteImage.setAttribute("height",200);
+
+    FavoriteImage.onclick = function() {
+        alert("찜 등록 완료");
+        //firebase에 쓰기
+        firebase.database().ref('Demo').set({
+                    username: "test",
+                    age: 200,
+                    a: "d",
+                });
+        // Android Studio input Data
+       //
+    };
+
+    wrap.appendChild(FavoriteImage);
+
+    // Store Image
+    var MainImage = document.createElement("img");
+    MainImage.className = 'mainimg';
+    MainImage.setAttribute("src", "img/store_2.png");
+    MainImage.setAttribute("width", 486);
+    MainImage.setAttribute("height",200);
+    wrap.appendChild(MainImage);
+
+
+    // Data
+    var AllDataTitle = document.createElement('div');
+    AllDataTitle.className = 'body';
+
+    AllDataTitle.style.fontSize = 16 + "px";
+    AllDataTitle.style.fontWeight = "Bold";
+    AllDataTitle.appendChild(document.createTextNode('\u00a0' + '\u00a0' + markerInfo[i].StoreName));   // Store Name
+    AllDataTitle.appendChild(document.createElement("br"));
+    AllDataTitle.appendChild(document.createElement("br"));
+    wrap.appendChild(AllDataTitle);
+
+    var AllData = document.createElement('div');
+    AllData.className = 'body';
+    AllData.style.fontSize = 11 + "px";
+    AllData.style.fontWeight = "Bold";
+    AllData.style.color = "gray";
+
+    AllData.appendChild(document.createTextNode('\u00a0' + '\u00a0' + "° 주 소 " + '\u00a0' + '\u00a0' + '\u00a0' + '\u00a0' + '\u00a0' + '\u00a0' + '\u00a0'));   // Adress
+    AllData.appendChild(document.createTextNode('\u00a0' +  markerInfo[i].Adress)); 
+    AllData.appendChild(document.createElement("br"));
+
+    AllData.appendChild(document.createTextNode('\u00a0' + '\u00a0' + "° 영업 시간 " + '\u00a0')); // Time 
+    AllData.appendChild(document.createTextNode('\u00a0' + markerInfo[i].OpenHour + ':' + markerInfo[i].OpenMin + ' ~ ' + markerInfo[i].CloseHour + ':' + markerInfo[i].CloseMin));
+    AllData.appendChild(document.createElement("br"));
+    
+    AllData.appendChild(document.createTextNode('\u00a0' + '\u00a0' + "° T E L " +  '\u00a0' + '\u00a0' + '\u00a0' +'\u00a0' + '\u00a0' + '\u00a0' + '\u00a0')); // Tel
+    AllData.appendChild(document.createTextNode('\u00a0' + markerInfo[i].Tel));
+ 
+    wrap.appendChild(AllData);
+
+    // Custom Overlay Create
+    var overlay = new kakao.maps.CustomOverlay({
+        yAnchor: 1.3,
+        position: marker.getPosition(),
+        content: content
+    });
+
+    // Custom Overlay Open Event
+    kakao.maps.event.addListener(marker, 'click', function() {
+        if (clickedOverlay) {
+		clickedOverlay.setMap(null); 
+        }
+        overlay.setMap(map);
+		clickedOverlay = overlay;
+
+		var pos = marker.getPosition();
+		console.log(pos);
+		map.panTo(pos);
+        });
+}
+
+var clusterer = new kakao.maps.MarkerClusterer({
+    map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체 
+    averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정 
+    minLevel: 9 // 클러스터 할 최소 지도 레벨 
+});
+
+var markers = markerInfo.map(function(markerInfo) {
+    return new kakao.maps.Marker({
+        position: data.latlng
+    });
+});
+
+// 클러스터러에 마커들을 추가합니다
+clusterer.addMarkers(markers);
+
+</script>
+</body>
+</html>
