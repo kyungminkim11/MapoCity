@@ -55,10 +55,10 @@
     // **전체 DB 값 초기화
     for (var i = 0; i < markerInfot.length; i++) {
         alert(markerInfot[i]);
-        // firebase.database().ref(markerInfo[i].id).set({
-        //     // StoreName : markerInfo[i].StoreName,
-        //     bSelect : false
-        // });
+        firebase.database().ref(markerInfo[i].id).set({
+             StoreName : markerInfo[i].StoreName,
+             bSelect : false
+        });
     }
 
     // ** DB 읽어오기
